@@ -74,14 +74,10 @@ def unique(csv_1='texts.csv', csv_2='calls.csv'):
 
     print("Altogether, there are {}<count> different telephone numbers in the records of the 2 csv files {} and {}.\n".format(unique_num_count, csv_1, csv_2))
 
-    print("The {} unique telephone numbers are: \n".format(unique_num_count))
-    for each in obj_1:
-        print(each)
+#     print("The {} unique telephone numbers are: \n".format(unique_num_count))
+#     for each in obj_1:
+#         print(each)
         
-    #return obj_1
-
-
-# In[2]:
 
 
 unique('texts.csv','calls.csv')

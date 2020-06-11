@@ -77,8 +77,8 @@ for each_line in calls:
 for each_line in calls:
     if each_line[0].startswith("(080)"):   
         if ' ' in each_line[1] and len(each_line[1]) <= 11:
-            if each_line[1][0:5] not in b2any_called_flat:
-                b2any_called_flat.append(each_line[1][0:5])
+            if each_line[1][0:4] not in b2any_called_flat:
+                b2any_called_flat.append(each_line[1][0:4])
      
 
 #append known telemarketer prefix 140 to list, if called

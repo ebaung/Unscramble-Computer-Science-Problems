@@ -1,0 +1,13 @@
+﻿Unscramble Computer Science Problems
+
+Run time analysis (Worst-Case Big-O Notation) 
+
+Task0: efficiency = O(1), because the run time stays constant (does not change as a function of the input)
+
+Task1: efficiency = O(n^3), because there are 3 loops (largest loop)
+
+Task2: efficiency = O(1), because the run time stays constant (does not change as a function of the input)
+
+Task3: efficiency = O(n), because there is 1 loop (largest loop)
+
+Task4: efficiency = O(n), because there is 1 loop (largest loop)

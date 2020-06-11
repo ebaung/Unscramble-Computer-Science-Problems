@@ -3,7 +3,7 @@ Project 1 of 4 in Udacity's Data Structures and Algorithms nanodegree. This proj
 
 Contents:
 The solution files are the .py files
-The .ipynb are given as the "working" or "scratch" files used to build up the final solution. The latest .ipynb files given also have the final solution.
+The .ipynb are given as the "working" or "scratch" files used to build up the final solution. 
 
 Testing the .py files in Jupyter Notebook:
 The file "Test .py files.ipynb" is provided as a convenient way to run the 5 Task_.py files within Jupyter notebook. Just a caveat: Make sure you run each cell one at a time. Don't run all cells at once.  This can cause one or more .py files to run incorrectly or incompletely (in particular, Task2.py doesn't behave nicely when all 5 Task cells are run simultaneously).

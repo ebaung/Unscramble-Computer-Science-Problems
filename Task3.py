@@ -55,111 +55,49 @@ with open('calls.csv', 'r') as f:
 import re
 
 # PART A
-
 print("PART A")
-#find all fixed lines area codes in parentheses (e.g. (080))
-fixed_lines = []
+#find all area codes and mobile prefixes called by people in Bangalore (originating from (080)):
+#find all outbound calls made from fixed lines in Bangalore
+#b2any = "Bangalore to any number"
+b2any_called = []
+#collect area codes of all fixed line numbers called
 for each_line in calls:
-    for each in each_line:
-        #the following Regex expression finds all string instances within parentheses (including the parentheses)
-        string_insideParentheses = re.findall(r'\([^()]*\)', each)
-        if string_insideParentheses not in fixed_lines:
-            fixed_lines.append(string_insideParentheses)
+    if each_line[0].startswith("(080)"):
+        string_insideParentheses = re.findall(r'\([^()]*\)', each_line[1])
+        if string_insideParentheses not in b2any_called:
+            b2any_called.append(string_insideParentheses)
+        
+        #filter out null values from b2any_called list
+        b2any_called = list(filter(None, b2any_called))
+        #flatten out fixed_lines, from a list of lists into a flat list
+        b2any_called_flat = [item for sublist in b2any_called for item in sublist]
+ 
 
-
-
-#find all mobile numbers (e.g. 7890 4928)
-mobile_numbers = []
+#collect area codes of all mobile numbers called
 for each_line in calls:
-    for each in each_line:
-        #filter for all numbers of length 11 that contain a space ' '
-        if ' ' in each and len(each) <= 11:
-            if each not in mobile_numbers:
-                mobile_numbers.append(each)
+    if each_line[0].startswith("(080)"):   
+        if ' ' in each_line[1] and len(each_line[1]) <= 11:
+            if each_line[1][0:5] not in b2any_called_flat:
+                b2any_called_flat.append(each_line[1][0:5])
+     
 
-
-
-
-#find all telemarketers' numbers (e.g. 140xxxxxxxx)
-telemkt_numbers = []
+#append known telemarketer prefix 140 to list, if called
 for each_line in calls:
-    for each in each_line:
-        #filter for all numbers starting with 140, numbers must be 10 digits in length
-        if each[0:3] == '140' and len(each) == 10:
-            if each not in telemkt_numbers:
-                telemkt_numbers.append(each)
+    #filter for all numbers starting with 140, numbers must be 10 digits in length
+    if each_line[0].startswith("(080)") and each_line[1].startswith("140") and len(each_line[1]) == 10:
+        if each_line[1][0:3] not in b2any_called_flat:
+            b2any_called_flat.append(each_line[1][0:3])
 
-
-
-#filter out null values from fixed_lines list
-fixed_lines = list(filter(None, fixed_lines))
-fixed_lines
-
-
-
+                
 #sort numbers alphanumerically
-mobile_numbers = [str(x) for x in mobile_numbers]
-mobile_numbers.sort(key=str)
+b2any_called_flat = [str(x) for x in b2any_called_flat]
+b2any_called_flat.sort(key=str)
 
+#final printout
+print("The numbers called by people in Bangalore have codes:")
+for each in b2any_called_flat:
+    print(each)             
 
-
-mobile_numbers
-
-
-#extract only the first 4 digits of each mobile number to get 4-digit the mobile number prefixes
-mobile_num_prefixes = []
-for each in mobile_numbers:
-    if each[0:4] not in mobile_num_prefixes:
-        mobile_num_prefixes.append(each[0:4])
-
-
-
-
-mobile_num_prefixes
-
-
-
-
-#flatten out fixed_lines, from a list of lists into a flat list
-fixed_lines_flat = [item for sublist in fixed_lines for item in sublist]
-
-
-
-
-fixed_lines_flat
-
-
-
-
-#sort fixed_lines numbers alphanumerically
-fixed_lines_flat = [str(x) for x in fixed_lines_flat]
-fixed_lines_flat.sort(key=str)
-
-
-
-
-print("The numbers called by people in Bangalore have codes: \n")
-print("Fixed lines:")
-for each in fixed_lines_flat:
-    print(each)
-print(" ")
-
-
-print("Mobile numbers (4 digit prefixes starting with 7, 8, or 9):")
-for each in (mobile_num_prefixes):
-    print(each)
-print(" ")
-
-#sort telemarketers' numbers alphanumerically
-telemkt_numbers = [str(x) for x in telemkt_numbers]
-telemkt_numbers.sort(key=str)
-
-
-
-
-print("Telemarketers' numbers start with the prefix 140:")
-for each in telemkt_numbers:
-    print(each)
 print(" ")
 
 
@@ -177,30 +115,28 @@ print(" ")
 
 
 print("PART B")
-
-fixed2fixed_calls = 0
+#b2b = "Bangalore to Bangalore"
+b2b_calls = 0
 for each_line in calls:
-    if "(" and ")" in each_line[0] and "(" and ")" in each_line[1]:
-        #optional printout of all landline-to-landline calls
-        #print(each_line[0], "called", each_line[1])
-        fixed2fixed_calls += 1
-print("There were {} fixed line to fixed line calls.".format(fixed2fixed_calls))
-print(" ")
+    if each_line[0].startswith("(080)") and each_line[1].startswith("(080)"):
+        b2b_calls += 1
+# suppress printout below since it's intermediate output        
+# print("There were {} fixed line to fixed line calls in Bangalore.".format(b2b_calls))
+# print(" ")
 
 
 #find all outbound calls made from fixed lines
-fixed_lines_outgoing_calls = 0
+#b2any = "Bangalore to any number"
+b2any = 0
 for each_line in calls:
-        if "(" and ")" in each_line[0]:
+        if each_line[0].startswith("(080)"):
             #optional printout of all outbound calls from landline numbers
             #print(each_line[0], "called", each_line[1])
-            fixed_lines_outgoing_calls += 1
-print("There were {} outbound calls made from fixed lines.".format(fixed_lines_outgoing_calls))
-print(" ")
-
-# In[107]:
-
+            b2any += 1
+# suppress printout below since it's intermediate output
+# print("There were {} outbound calls made from fixed lines.".format(b2any))
+# print(" ")
 
 # percentage(%) of landline-to-landline calls made, out of the total number of calls
-print("{}/{}, or {} percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore.".format(fixed2fixed_calls, fixed_lines_outgoing_calls, round(100*(fixed2fixed_calls/fixed_lines_outgoing_calls),2)))
+print("{}/{}, or {} (%) percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore.".format(b2b_calls, b2any, round(100*(b2b_calls/b2any),2)))
 

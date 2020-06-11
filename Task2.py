@@ -21,11 +21,23 @@ September 2016.".
 """
 max_call_duration = 0
 max_call_number = ""
-for each_line in calls: 
-# check if call duration is longer than last record max_call_duration
-    if int(each_line[3]) > int(max_call_duration): 
-        max_call_duration = int(each_line[3])
-        max_call_number = each_line[0]
 
+callers = {}
+for each_line in calls:
+    if each_line[0] not in callers:
+        callers[each_line[0]] = int(each_line[3])
+    else:
+        callers[each_line[0]] += int(each_line[3])
+        
+    if each_line[1] not in callers:
+        callers[each_line[1]] = int(each_line[3])
+    else:
+        callers[each_line[1]] += int(each_line[3])
+        
+max_caller = (max(callers.items(),key = lambda i : i[1]))
+max_call_number = max_caller[0]
+max_call_duration = max_caller[1]
 
+        
+        
 print("{} <telephone number> spent the longest time, {} <total time> seconds, on the phone during September 2016.".format(max_call_number,max_call_duration))
